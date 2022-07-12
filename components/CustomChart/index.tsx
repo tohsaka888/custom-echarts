@@ -7,6 +7,8 @@ function CustomChart({ data }: CustomEcharts.CustomChartProps) {
   const chartRef = useRef<echarts.EChartsType>(null!)
   const [activeName, setActiveName] = useState<string>('企业职工养老保险')
 
+  console.log('rerender')
+
   // 初始化echarts
   useEffect(() => {
     if (chartInitRef.current) {
@@ -29,6 +31,12 @@ function CustomChart({ data }: CustomEcharts.CustomChartProps) {
   }, [activeName, data])
 
   // TODO: 设置echarts
+  /**
+   * 根据deps(activeName)动态返回option,实现echarts动态更新
+   * @date 2022-07-12
+   * @param {any} (
+   * @returns {any}
+   */
   const option = useMemo(() => {
     const dataSource: any[] = []
     const legendData: any[] = []
@@ -54,7 +62,9 @@ function CustomChart({ data }: CustomEcharts.CustomChartProps) {
           fontSize: 16,
           padding: 5,
           width: 400,
-          backgroundColor: item.name === activeName ? 'rgba(49,117,233,0.15)' : 'transparent'
+          backgroundColor: item.name === activeName ? 'rgba(49,117,233,0.15)' : 'transparent',
+          borderWidth: 8,
+          borderColor: 'transparent',
         }
       })
     })
@@ -78,11 +88,6 @@ function CustomChart({ data }: CustomEcharts.CustomChartProps) {
           legendHoverLink: false,
           label: {
             show: false
-          },
-          itemStyle: {
-            color: '#93ABD3',
-            borderWidth: 5,
-            borderColor: '#fff'
           },
           emphasis: {
             scale: false,
